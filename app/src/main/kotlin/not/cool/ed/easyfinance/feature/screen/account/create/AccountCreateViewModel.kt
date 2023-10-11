@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import not.cool.ed.easyfinance.feature.featurecase.account.api.SaveNewAccountFeatureCase
 import not.cool.ed.easyfinance.feature.featurecase.account.api.SaveNewAccountResult
-import not.cool.ed.easyfinance.feature.featurecase.category.api.SaveNewCategoryResult
 import not.cool.ed.easyfinance.feature.screen.account.create.navigation.AccountCreateRouter
 import javax.inject.Inject
 
@@ -24,7 +23,7 @@ class AccountCreateViewModel @Inject constructor(
     private val _newAccount: MutableStateFlow<NewAccountModel> = MutableStateFlow(NewAccountModel(""))
     val newAccount: StateFlow<NewAccountModel> = _newAccount
 
-    private val _error: Channel<String> = Channel()
+    private val _error: Channel<String> = Channel(capacity = Channel.UNLIMITED)
     val error: ReceiveChannel<String> = _error
 
     fun close() {
