@@ -32,7 +32,7 @@ class CategoryCreateViewModel @Inject constructor(
     }
     val newCategory: StateFlow<NewCategoryModel> = _newCategory
 
-    private val _error: Channel<String> = Channel()
+    private val _error: Channel<String> = Channel(capacity = Channel.UNLIMITED)
     val error: ReceiveChannel<String> = _error
 
     fun close() {
