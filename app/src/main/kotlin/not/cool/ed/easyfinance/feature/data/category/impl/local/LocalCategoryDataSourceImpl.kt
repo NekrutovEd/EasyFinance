@@ -7,7 +7,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import not.cool.ed.easyfinance.feature.data.category.api.Category
 import not.cool.ed.easyfinance.feature.data.category.api.NewCategory
 import not.cool.ed.easyfinance.feature.data.category.impl.local.db.CategoryDao
-import not.cool.ed.easyfinance.feature.data.category.impl.local.db.CategoryMapper
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.db.CategoryMapper
 import javax.inject.Inject
 import javax.inject.Provider
 

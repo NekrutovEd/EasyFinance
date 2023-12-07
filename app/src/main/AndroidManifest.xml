@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".app.App"
+        android:name="not.cool.ed.easyfinance.app.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,7 +15,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".app.ui.MainActivity"
+            android:name="not.cool.ed.easyfinance.app.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.EasyFinance">
             <intent-filter>

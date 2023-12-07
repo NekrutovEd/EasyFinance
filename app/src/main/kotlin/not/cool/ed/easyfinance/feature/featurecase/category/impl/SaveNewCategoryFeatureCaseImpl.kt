@@ -3,6 +3,7 @@ package not.cool.ed.easyfinance.feature.featurecase.category.impl
 import not.cool.ed.easyfinance.common.enums.ReceiptType
 import not.cool.ed.easyfinance.feature.data.category.api.CategoryRepository
 import not.cool.ed.easyfinance.feature.data.category.api.NewCategory
+import not.cool.ed.easyfinance.feature.data.transaction.api.NewCategory
 import not.cool.ed.easyfinance.feature.featurecase.category.api.SaveNewCategoryFeatureCase
 import not.cool.ed.easyfinance.feature.featurecase.category.api.SaveNewCategoryResult
 import javax.inject.Inject

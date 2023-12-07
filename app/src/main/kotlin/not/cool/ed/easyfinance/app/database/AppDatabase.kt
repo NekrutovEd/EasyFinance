@@ -10,8 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import not.cool.ed.easyfinance.app.database.AppDatabase.Companion.DB_NAME
-import not.cool.ed.easyfinance.feature.data.category.impl.local.db.CategoryDatabase
-import not.cool.ed.easyfinance.feature.data.category.impl.local.db.CategoryEntity
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.db.CategoryDatabase
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.db.CategoryEntity
 
 @Database(
     entities = [

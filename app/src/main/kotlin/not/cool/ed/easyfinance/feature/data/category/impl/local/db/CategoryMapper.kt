@@ -10,7 +10,9 @@ import dagger.hilt.android.components.ViewModelComponent
 import not.cool.ed.easyfinance.common.enums.ReceiptType
 import not.cool.ed.easyfinance.common.mapping.Mapper
 import not.cool.ed.easyfinance.feature.data.category.api.Category
-import not.cool.ed.easyfinance.feature.data.category.api.NewCategory
+import not.cool.ed.easyfinance.feature.data.transaction.api.NewCategory
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.db.CategoryEntity
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.db.CategoryMapper
 import javax.inject.Inject
 
 class CategoryMapper @Inject constructor(

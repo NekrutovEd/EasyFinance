@@ -7,9 +7,10 @@ import dagger.hilt.android.components.ViewModelComponent
 import kotlinx.coroutines.withContext
 import not.cool.ed.easyfinance.common.di.context.DispatcherIO
 import not.cool.ed.easyfinance.feature.data.category.api.Category
-import not.cool.ed.easyfinance.feature.data.category.api.CategoryRepository
-import not.cool.ed.easyfinance.feature.data.category.api.NewCategory
-import not.cool.ed.easyfinance.feature.data.category.impl.local.LocalCategoryDataSource
+import not.cool.ed.easyfinance.feature.data.transaction.api.CategoryRepository
+import not.cool.ed.easyfinance.feature.data.transaction.api.NewCategory
+import not.cool.ed.easyfinance.feature.data.transaction.impl.CategoryRepositoryImpl
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.LocalCategoryDataSource
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

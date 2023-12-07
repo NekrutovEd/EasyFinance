@@ -1,5 +1,7 @@
 package not.cool.ed.easyfinance.feature.data.category.api
 
+import not.cool.ed.easyfinance.feature.data.transaction.api.NewCategory
+
 interface CategoryRepository {
 
     suspend fun getById(categoryId: Long): Category?

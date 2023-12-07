@@ -10,9 +10,13 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.Instant
+import not.cool.ed.easyfinance.common.enums.ReceiptType
 import not.cool.ed.easyfinance.feature.featurecase.account.api.GetAccountsFeatureCase
 import not.cool.ed.easyfinance.feature.featurecase.category.api.GetDebitCategoriesFeatureCase
 import not.cool.ed.easyfinance.feature.featurecase.category.api.model.DebitCategory
+import not.cool.ed.easyfinance.feature.featurecase.transaction.api.NewTransaction
+import not.cool.ed.easyfinance.feature.featurecase.transaction.api.SaveNewTransactionFeatureCase
 import not.cool.ed.easyfinance.feature.screen.debit.create.navigation.DebitCreateRouter
 import javax.inject.Inject
 
@@ -21,6 +25,7 @@ class DebitCreateViewModel @Inject constructor(
     private val router: DebitCreateRouter,
     private val getDebitCategories: GetDebitCategoriesFeatureCase,
     private val getAccounts: GetAccountsFeatureCase,
+    private val saveTransaction: SaveNewTransactionFeatureCase,
 ) : ViewModel(), DebitCreateRouter by router {
 
     private val _state: MutableStateFlow<DebitCreateState> = MutableStateFlow(DebitCreateState())
@@ -53,6 +58,20 @@ class DebitCreateViewModel @Inject constructor(
         _state.update { it.copy(showDatePicker = true) }
     }
 
+    fun onClickSave() {
+            val newTransaction = with(_state.value) {
+                NewTransaction(
+                    receiptType = ReceiptType.Debit,
+                    accountId = to?.id ?: error("Категория не может быть пустой"),
+                    categoryId = category?.id ?: error("Категория не может быть пустой"),
+                    date = date,
+                    actorId = from?.id ?: error("Отправитель не может быть пустой"),
+                    amount = amount.toLong(),
+                )
+            }
+            saveTransaction(newTransaction)
+    }
+
     fun onDismissCategoryModal() {
         _state.update { it.copy(showCategorySelector = false) }
     }
@@ -66,22 +85,28 @@ class DebitCreateViewModel @Inject constructor(
     }
 
     fun onSelectedAccountFrom(account: Account) {
-        _state.update { state -> state.copy(from = account, to = state.to.takeUnless { it == account }) }
+        _state.update { state ->
+            state.copy(
+                from = account,
+                to = state.to.takeUnless { it == account }
+            )
+        }
     }
 
     fun onSelectedAccountTo(account: Account) {
-        _state.update { state -> state.copy(from = state.from.takeUnless { it == account }, to = account) }
+        _state.update { state ->
+            state.copy(
+                from = state.from.takeUnless { it == account },
+                to = account
+            )
+        }
     }
 
-    fun onChangedDescription(newDescription: String) {
-        _state.update { it.copy(description = newDescription) }
+    fun onChangedAmount(newAmount: String) {
+        _state.update { it.copy(amount = newAmount) }
     }
 
-    fun onChangedTotal(newTotal: String) {
-        _state.update { it.copy(total = newTotal) }
-    }
-
-    fun onChangedDate(newDate: Long) {
+    fun onChangedDate(newDate: Instant) {
         _state.update { it.copy(date = newDate, showDatePicker = false) }
     }
 }

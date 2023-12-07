@@ -8,7 +8,7 @@ class GetAccountsFeatureCaseImpl @Inject constructor(
 
 ) : GetAccountsFeatureCase {
 
-    private val accounts = listOf("Счет1", "Счет2").map(::Account)
+    private val accounts = listOf("Счет1", "Счет2").mapIndexed { id, title -> Account(id.toLong(), title) }
 
     override suspend fun invoke(): List<Account> = accounts
 }

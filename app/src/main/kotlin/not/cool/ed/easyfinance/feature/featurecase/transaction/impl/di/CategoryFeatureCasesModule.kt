@@ -1,4 +1,4 @@
-package not.cool.ed.easyfinance.feature.featurecase.category.impl.di
+package not.cool.ed.easyfinance.feature.featurecase.transaction.impl.di
 
 import dagger.Binds
 import dagger.Module

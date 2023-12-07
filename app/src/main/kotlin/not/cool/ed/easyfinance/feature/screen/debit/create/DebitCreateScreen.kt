@@ -36,6 +36,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import not.cool.ed.easyfinance.common.navigation.api.composableTo
 import not.cool.ed.easyfinance.common.uikit.atom.spacer.Spacer
 import not.cool.ed.easyfinance.common.uikit.molecule.account.AccountItem
@@ -77,7 +81,7 @@ fun DebitCreateScreen(viewModel: DebitCreateViewModel = hiltViewModel()) {
             val accounts by viewModel.accounts.collectAsStateWithLifecycle()
 
             val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-            val datePickerState = rememberDatePickerState(state.date)
+            val datePickerState = rememberDatePickerState(state.date.toEpochMilliseconds())
 
             val locale = remember { Locale.getDefault() }
 
@@ -97,6 +101,16 @@ fun DebitCreateScreen(viewModel: DebitCreateViewModel = hiltViewModel()) {
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
+                Text(text = "Счет откуда",)
+                AccountRow(
+                    accounts = accounts,
+                    selectedAccount = state.from,
+                    modifier = Modifier.size(68.dp),
+                    onClickAccount = viewModel::onSelectedAccountFrom,
+                    onClickCreateAccount = viewModel::onClickCreateAccount
+                )
+
+                Spacer(12.dp)
 
                 Text(text = "Категория")
                 CategoryItem(
@@ -108,38 +122,28 @@ fun DebitCreateScreen(viewModel: DebitCreateViewModel = hiltViewModel()) {
 
                 Spacer(12.dp)
 
-                Text(text = "Описание")
-                TextField(value = state.description, onValueChange = viewModel::onChangedDescription)
-
-                Spacer(12.dp)
-
-                Text(text = "Сумма")
-                val decimalAmountTransformation = remember { DecimalAmountTransformation(locale) }
-                TextField(
-                    value = state.total,
-                    onValueChange = { viewModel.onChangedTotal(decimalAmountTransformation.filteredDecimalText(it)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    visualTransformation = decimalAmountTransformation
-                )
-
-                Spacer(12.dp)
-
                 Text(text = "Дата")
                 val dateFormatter = remember { SimpleDateFormat(DATE_PATTERN, locale) }
                 Button(onClick = { viewModel.onClickDate() }) {
-                    Text(text = dateFormatter.format(state.date))
+                    Text(text = dateFormatter.format(state.date.toEpochMilliseconds()))
                 }
                 if (state.showDatePicker) {
                     DatePickerDialog(
                         onDismissRequest = { viewModel.onDismissDatePicker() },
                         confirmButton = {
-                            Button(onClick = { viewModel.onChangedDate(datePickerState.selectedDateMillis ?: 0) }) {
+                            Button(onClick = {
+                                viewModel.onChangedDate(
+                                    Instant.fromEpochMilliseconds(
+                                        datePickerState.selectedDateMillis ?: error("Дата не выбрана")
+                                    )
+                                )
+                            }) {
                                 Text(text = "Применить")
                             }
                         },
                         dismissButton = {
                             FilledTonalButton(onClick = {
-                                datePickerState.selectedDateMillis = state.date
+                                datePickerState.selectedDateMillis = state.date.toEpochMilliseconds()
                                 viewModel.onDismissDatePicker()
                             }) {
                                 Text(text = "Отменить")
@@ -152,18 +156,11 @@ fun DebitCreateScreen(viewModel: DebitCreateViewModel = hiltViewModel()) {
 
                 Spacer(12.dp)
 
-                Text(text = "Счет откуда")
-                AccountRow(
-                    accounts = accounts,
-                    selectedAccount = state.from,
-                    modifier = Modifier.size(68.dp),
-                    onClickAccount = viewModel::onSelectedAccountFrom,
-                    onClickCreateAccount = viewModel::onClickCreateAccount
-                )
+                Text(text = "Время = ${state.date.toLocalDateTime(TimeZone.currentSystemDefault()).time.format()}")
 
                 Spacer(12.dp)
 
-                Text(text = "Счет куда")
+                Text(text = "Получатель",)
                 AccountRow(
                     accounts = accounts,
                     selectedAccount = state.to,
@@ -171,10 +168,31 @@ fun DebitCreateScreen(viewModel: DebitCreateViewModel = hiltViewModel()) {
                     onClickAccount = viewModel::onSelectedAccountTo,
                     onClickCreateAccount = viewModel::onClickCreateAccount
                 )
+
+                Spacer(12.dp)
+
+                Text(text = "Сумма",)
+                TextField(
+                    value = state.amount,
+                    onValueChange = viewModel::onChangedAmount,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+
+                Spacer(12.dp)
+
+                Text(text = "Повтор")
+
+                Spacer(12.dp)
+
+                Button(onClick = viewModel::onClickSave) {
+                    Text(text = "Применить")
+                }
             }
         }
     }
 }
+
+fun LocalTime.format(): String = "$hour : $minute"
 
 @Composable
 fun AccountRow(

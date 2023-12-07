@@ -49,11 +49,12 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.5-dev-k1.9.21-163bb051fe5"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "javamoney.properties"
         }
     }
 }
@@ -104,6 +105,10 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+
+    implementation("org.javamoney:moneta:1.4.2")
+    implementation("nl.hiddewieringa:money-kotlin:1.0.1")
     // ---------------------------------------------------------------------------------------------
 
     testImplementation("junit:junit:4.13.2")

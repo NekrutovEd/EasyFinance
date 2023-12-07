@@ -10,6 +10,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import not.cool.ed.easyfinance.app.database.AppDatabase
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.db.CategoryDao
+import not.cool.ed.easyfinance.feature.data.transaction.impl.local.db.CategoryEntity
 
 @Dao
 interface CategoryDao {
